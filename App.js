@@ -45,8 +45,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.container, { flex: 1, backgroundColor: "orange" }]}>
-        <Banner name="calculadora"></Banner>
+      <View style={[styles.container, {backgroundColor: "#59C173",height:"10%" }]}>
+      <Text style={[styles.letras.negrita,styles.letras.fontSize25]}  >Sistema de Notas</Text>
+      </View>
+      <View style={{marginTop: 80, flexDirection: "row"}}>
+      <TextInput style={[styles.inputs]}/>
+
+      <TextInput style={[styles.inputs,{marginLeft:30}]}/>
+
       </View>
       <View
         style={[styles.container, { flex: 5, backgroundColor: "powderblue" }]}
@@ -130,12 +136,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputs: {
-    color: "blue",
-    borderRadius: 5,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: "green",
-    textAlign: "center",
+    backgroundColor: "green",
+    borderBottomColor: 'blue',
+    borderBottomWidth: 2,
   },
   buttons: {
     borderRadius: 10,
@@ -148,5 +151,11 @@ const styles = StyleSheet.create({
   textButtons: {
     color: "white",
     fontWeight: "bold",
+  },
+  letras:{
+    negrita: {fontWeight: 'bold'},
+    cursiva: {fontStyle: 'italic'},
+    subrayado: {textDecorationLine: 'underline'},
+    fontSize25:{fontSize:25},
   },
 });

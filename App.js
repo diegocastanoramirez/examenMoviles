@@ -6,147 +6,189 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import Banner from "./components/Banner";
+let estudiantes =[
+  {nombre:"flavio nelson",identificacion:"123456",asignatura:"matematicas",nota1:"4.5",nota2:"4.5",nota3:"4.5",definitiva:"4.5",observacion:"Aprueba"},
+  {nombre:"pedro perez",identificacion:"987456",asignatura:"español",nota1:"4.0",nota2:"4.0",nota3:"4.0",definitiva:"4.0",observacion:"Aprueba"}
+]
 export default function App() {
   // Definir las variables de estado del componente
   const [valor1, setValor1] = useState("");
   const [valor2, setValor2] = useState("");
-  const [resultado, setResultado] = useState(0);
+  const [valor3, setValor3] = useState("");
+  const [valor4, setValor4] = useState("");
+  const [valor5, setValor5] = useState("");
+  const [valor6, setValor6] = useState("");
+  const [valor7, setValor7] = useState("");
+  const [valor8, setValor8] = useState("");
+
+  
   const [esValido, setesValido] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  // Metodos o funciones
+
+  let guardar=1
+  let buscarNoexiste=0
   let calcular = (operador) => {
-    if (valor1 != "" && valor2 != "") {
-      setesValido(true)
-      let resulta = 0;
-      switch (operador) {
-        case "+":
-          resulta = parseFloat(valor1) + parseFloat(valor2);
-          break;
-        case "-":
-          resulta = parseFloat(valor1) - parseFloat(valor2);
-          break;
-        case "*":
-          resulta = parseFloat(valor1) * parseFloat(valor2);
-          break;
-        case "/":
-          resulta = parseFloat(valor1) / parseFloat(valor2);
-          break;
+    if(parseFloat(valor4)>5||parseFloat(valor4)<0||parseFloat(valor5)>5||parseFloat(valor5)<0||parseFloat(valor6)>5||parseFloat(valor6)<0){
+      setMensaje("Los datos de las notas no son correctos deben de ser entre 0 y 5")
+
+      }else{
+      if (valor1 != ""&& valor2 != ""&& valor3 != ""&& valor4 != "" && valor5 != ""&& valor6 != "" && operador=="calcular") {
+        setesValido(true)
+        setMensaje("")
+        let resulta = 0;
+  
+            resulta = parseFloat(valor4)*0.30 + parseFloat(valor5)*0.35+ parseFloat(valor6)*0.35;
+            setValor7(parseFloat (resulta).toFixed(2))
+            if(parseFloat(resulta)>=3.0 ){
+                setValor8("Aprueba")
+            }else if(parseFloat(resulta)<=2.94){
+              setValor8("Habilita")
+            }
+           else if(parseFloat(resulta)<2.0){
+              setValor8("Reprueba")
+            }
+              ///filtrar si existe
+            estudiantes.filter(function(estudiante){
+              if(estudiante.identificacion==valor1){
+                setMensaje("El estudiante ya existe no se puede guardar")
+                guardar=0
+              }
+            })
+  
       }
-      // Cambiar el contenido de la variable de estado resultado con la info de resulta
-      setResultado(resulta);
-      setMensaje("Calculo realizado correctamente ...")
     }
-    else{
-      setesValido(false);
-      setMensaje("Debe ingresar los 2 valores ...")
+      if(guardar==1&&operador=="calcular"&& valor7 !=""&& valor8 !=""){
+        setMensaje("Estudiante guardado")
+        estudiantes.push({nombre:valor2,identificacion:valor1,asignatura:valor3,nota1:valor4,nota2:valor5,nota3:valor6,definitiva:valor7,observacion:valor8})
+        console.log(estudiantes)
+      }
+
+    else if(valor1 == ""|| valor2 == ""|| valor3 == ""|| valor4 == "" || valor5 == ""|| valor6 == ""){
+      setMensaje("")
+      setMensaje("Faltan datos por llenar")
     }
+
+
+
+    
+    if(operador=="limpiar") {
+     
+        setValor1(""),setValor2(""),setValor3(""),setValor4(""),setValor5(""),setValor6(""),setValor7(""),setValor8("")  
+        setMensaje("")
+      }
+
+    if(operador=="buscar"){
+      estudiantes.filter(function(estudiante){
+        console.log(estudiantes)
+        if(estudiante.identificacion==valor1){
+          buscarNoexiste=1
+          setMensaje("")
+          setValor2(estudiante.nombre),setValor3(estudiante.asignatura),setValor4(estudiante.nota1),setValor5(estudiante.nota2),setValor6(estudiante.nota3),setValor7(estudiante.definitiva),setValor8(estudiante.observacion)
+        }
+            
+      })
+      if(buscarNoexiste==0){
+        console.log
+        setMensaje("no esta registrado")
+      }
+  
+    }
+
+
+
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.container, {backgroundColor: "#59C173",height:"10%" }]}>
-      <Text style={[styles.letras.negrita,styles.letras.fontSize25]}  >Sistema de Notas</Text>
+    <View style={[{width:"100%"}]}>
+      <View style={[{backgroundColor: "#59C173",height:"8%",width:"100%",alignItems:"center",justifyContent: "center" }]}>
+        <Text style={[styles.letras.negrita,styles.letras.fontSize25,{}]}  >Sistema de Notas</Text>
       </View>
-      <View style={{marginTop: 80, flexDirection: "row"}}>
-      <TextInput style={[styles.inputs]}/>
 
-      <TextInput style={[styles.inputs,{marginLeft:30}]}/>
+      <View style={[{ flexDirection: "row",justifyContent:"center",alignItems: "center",marginTop:20}]}>
 
-      </View>
-      <View
-        style={[styles.container, { flex: 5, backgroundColor: "powderblue" }]}
-      >
-        <Text style={{ fontWeight: "bold" }}>Calculadora Básica</Text>
-        <Text>Valor 1</Text>
-        <TextInput
-          placeholder="Ingrese valor 1"
-          style={styles.inputs}
-          onChangeText={(valor1) => setValor1(valor1)}
-          value={valor1}
-        />
-        <Text>Valor 2</Text>
-        <TextInput
-          placeholder="Ingrese valor 2"
-          style={styles.inputs}
-          onChangeText={(valor2) => setValor2(valor2)}
-          value={valor2}
-        />
-        <Text>Resultado</Text>
-        <Text
-          style={[
-            styles.inputs,
-            {
-              width: 200,
-              height: 40,
-              alignItems: "center",
-              justifyContent: "center",
-            },
-          ]}
-        >
-          {resultado.toFixed(1)}
-        </Text>
-        <View
-          style={[styles.container, { marginTop: 20, flexDirection: "row" }]}
-        >
-          <TouchableOpacity
-            style={[{ backgroundColor: "green" }, styles.buttons]}
-            onPress={()=>calcular("+")}
-          >
-            <Text style={styles.textButtons}>+</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[{ backgroundColor: "red" }, styles.buttons]}
-            onPress={()=>calcular("-")}
-          >
-            <Text style={styles.textButtons}>-</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[{ backgroundColor: "purple" }, styles.buttons]}
-            onPress={()=>calcular("*")}
-          >
-            <Text style={styles.textButtons}>*</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[{ backgroundColor: "orange" }, styles.buttons]}
-            onPress={()=>calcular("/")}
-          >
-            <Text style={styles.textButtons}>/</Text>
-          </TouchableOpacity>
+        <View style={[{ flexDirection: "column",marginRight:5,marginLeft:490,flex:2,justifyContent:"center"}]}>
+
+          <Text style={styles.textos}>identificacion</Text>  
+          <Text style={styles.textos}>Nombre</Text>
+          <Text style={styles.textos}>Asignatura</Text>
+          <Text style={styles.textos}>Nota Momento 1 (30%)</Text>
+          <Text style={styles.textos}>Nota Momento 2 (35%)</Text>
+          <Text style={styles.textos}>Nota Momento 3 (35%)</Text>
+          <Text style={styles.textos}>Definitiva</Text>
+          <Text style={styles.textos}>Observacion</Text>
+          </View>
+
+
+        <View style={[{ flexDirection: "column",marginLeft:5,marginRight:490,flex:2,justifyContent:"center",alignItems: "center"}]}>
+          <TextInput style={styles.inputs} onChangeText={(valor1) => setValor1(valor1)} value={valor1}></TextInput>
+          <TextInput style={styles.inputs} onChangeText={(valor2) => setValor2(valor2)} value={valor2}></TextInput>
+          <TextInput style={styles.inputs} onChangeText={(valor3) => setValor3(valor3)} value={valor3}></TextInput>
+          <TextInput style={styles.inputs} onChangeText={(valor4) => setValor4(valor4)} value={valor4} maxLength={3}></TextInput>
+          <TextInput style={styles.inputs} onChangeText={(valor5) => setValor5(valor5)} value={valor5} maxLength={3}></TextInput>
+          <TextInput style={[styles.inputs]} onChangeText={(valor6) => setValor6(valor6)} value={valor6} maxLength={3}></TextInput>
+          <Text style={[styles.inputs]} onChangeText={(valor7) => setValor7(valor7)} value={valor7}>{valor7}</Text>
+          <Text style={styles.inputs} onChangeText={(valor7) => setValor7(valor7)} value={valor7}>{valor8}</Text>
         </View>
-        <TouchableOpacity
-          style={[{ backgroundColor: "black", marginTop: 20 }, styles.buttons]}
-        >
-          <Text style={styles.textButtons}>C</Text>
-        </TouchableOpacity>
-        <Text style={{color: esValido ? "green" : "red"}}>{mensaje}</Text>
-      </View>
 
-      <View style={[styles.container, { flex: 1, backgroundColor: "gray" }]}>
-        <Text>Pie</Text>
+
       </View>
-    </View>
+      <View style={[{flexDirection: "row",marginTop:10,marginLeft:490}]}>
+          <TouchableOpacity
+                style={[{ backgroundColor: "green",padding:3,width:190,justifyContent:"center",alignItems: "center",marginRight:12}]}
+                onPress={()=>calcular("calcular")}
+              >
+                <Text style={[styles.textButtons]}>Calcular/Guardar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+                style={[{ backgroundColor: "green",flexDirection: "column"}, styles.buttons]}
+                onPress={()=>calcular("limpiar")}
+              >
+                <Text style={[styles.textButtons]}>Limpiar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+                style={[{ backgroundColor: "green",flexDirection: "column" }, styles.buttons]}
+                onPress={()=>calcular("buscar")}
+              >
+                <Text style={[styles.textButtons]}>Buscar</Text>
+          </TouchableOpacity>
+      </View>
+      <Text style={[styles.textButtons,{color:"black",alignContent:"center",justifyContent:"center",marginLeft:490}]}>{mensaje}</Text>
+
+      </View>
+       
+      
+
+
+   
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
+    container: {
+    marginTop:50,
     justifyContent: "center",
     width: "100%",
+    flex:1
   },
   inputs: {
-    backgroundColor: "green",
-    borderBottomColor: 'blue',
+    borderBottomColor: 'black',
     borderBottomWidth: 2,
+    marginBottom:8,
+    marginTop:8,
+    width:90,
+    textAlign:"center"
+  },
+  textos:{
+    marginBottom:8,
+    marginTop:8,
+    fontSize:15
   },
   buttons: {
-    borderRadius: 10,
-    padding: 10,
     width: 80,
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 5,
+    marginLeft:12,
+    marginRight:12
   },
   textButtons: {
     color: "white",
@@ -157,5 +199,6 @@ const styles = StyleSheet.create({
     cursiva: {fontStyle: 'italic'},
     subrayado: {textDecorationLine: 'underline'},
     fontSize25:{fontSize:25},
+    fontSize15:{fontSize:15},
   },
 });
